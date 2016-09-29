@@ -33,6 +33,8 @@ var colorOption;
 var colorExpression;
 var singleColor;
 var lastTheme;
+var oldResult;
+var oldGradient;
 
 var appHandle;
 
@@ -228,7 +230,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					}
 					$("#themeTable tr").remove();
 					drawThemeTable();
-					console.log(lastTheme);
+					//console.log(lastTheme);
 					generateTheme(lastTheme);
 				});
 				
@@ -591,146 +593,148 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 			}					
 			else if(colorOption=="color4") {
-				
+				var reverseOrder = false;
 				$("."+colorOption).empty();
 				
-				$('<div style="height:300px;overflow:auto;"><table id="gradientTable" class="table table-hover table-condensed"><tr><th>Gradient</th><th>Colors</th></tr></table>"').appendTo("."+colorOption);
+				$('<label class="lui-checkbox" style="paddin-top:10px;padding-bottom:10px;padding-left:5px;"><input class="lui-checkbox__input" type="checkbox" id="reverseColorCheckboxGradient"/><div class="lui-checkbox__check-wrap"><span class="lui-checkbox__check"></span><span class="lui-checkbox__check-text">Reverse Colors</span></div></label>').appendTo("."+colorOption);
 				
-				$.each(gradient_theme, function(index, value) {
-					
-					var tableRow = "<tr class='tableRow' id='"+value.label+"'><td>"+value.label+"</td>";
-					var colorArray = [];
-					
-					$.each(value.value, function(index, value) {
-								//colorArray = colorArray + "<div style='float:left;height:20px;width:20px;background-color:"+value+";'></div>"		
-								colorArray[index] = value;
-					});
-					
-					if(colorArray.length==3) {
-						var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+", "+colorArray[2]+");'></div>";
+				$('<div style="height:300px;overflow:auto;"><table id="gradientTable" class="table table-hover table-condensed"></table>"').appendTo("."+colorOption);
+				
+				$('#reverseColorCheckboxGradient').click(function(value) {
+					$(this).toggleClass("selected");
+					if($( "#reverseColorCheckboxGradient" ).hasClass( "selected" )) {
+						reverseOrder = true;
 					}
 					else {
-						var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+");'></div>";
+						reverseOrder = true;
 					}
-					tableRow = tableRow + "<td style='width:60%;'> " + gradientVariable + "</td></tr>";
-					
-					$(tableRow).appendTo("#gradientTable");					
+					$("#gradientTable tr").remove();
+					drawGradientTable();
+					//console.log(lastTheme);
+					generateGradientTheme(lastTheme);
 				});
 				
+				drawGradientTable();
+				
+				function drawGradientTable() {
+
+					$('<tr><th>Gradient</th><th>Colors</th></tr>').appendTo("#gradientTable");
+					
+					$.each(gradient_theme, function(index, value) {
+						
+						var tableRow = "<tr class='tableRow' id='"+index+"'><td>"+value.label+"</td>"; //changed from value.label since can't address spaces in element IDs
+						var colorArray = [];
+						
+						var palette;
+						
+						if(reverseOrder==true) {
+							palette = value.value.reverse();
+						}
+						else {
+							palette = value.value;
+						}
+						
+						$.each(palette, function(index, value) {
+									//colorArray = colorArray + "<div style='float:left;height:20px;width:20px;background-color:"+value+";'></div>"		
+									colorArray[index] = value;
+						});
+						
+						if(colorArray.length==3) {
+							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+", "+colorArray[2]+");'></div>";
+						}
+						else {
+							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+");'></div>";
+						}
+						tableRow = tableRow + "<td style='width:60%;'> " + gradientVariable + "</td></tr>";
+						
+						$(tableRow).appendTo("#gradientTable");					
+					});
+				}
 				
 				//$('<div class="colorObj hidden" id="showGradientTheme" style="width:100%;height:40px;margin-top:25px;"></div>').appendTo("#gradientTable");
 				//$("#showGradientTheme").css("background", "linear-gradient(to right,#"+$("#chartGradient1").val()+", #"+$("#chartGradient2").val()+", #"+$("#chartGradient3").val()+")");
 				
 				$("#gradientTable").on('click', 'tr', function() {
+					lastTheme = $(this);
+					generateGradientTheme($(this));
+				});
+				
+					function generateGradientTheme(td) {
+						//console.log( $(this).find('td:first').text() );
+						var clickedTheme = td.find('td:first').text();
 
-					//console.log( $(this).find('td:first').text() );
-					var clickedTheme = $(this).find('td:first').text();
+						$(".tableRow").removeClass("success");
+						//$(this).toggleClass("success");
+						$("#" + lastTheme.context.id).addClass("success");
+						
+						var result = gradient_theme.filter(function( obj ) {
+						  return obj.label == clickedTheme;
+						})[0];
+						
+						oldResult = result;
+						
+						//Pull out the expression to use for gradient
+						colorExpression = "";
+						var exp0;
+						//console.log(qlikObject);
 
-					$(".tableRow").removeClass("success");
-					$(this).toggleClass("success");
-					
-					var result = gradient_theme.filter(function( obj ) {
-					  return obj.label == clickedTheme;
-					})[0];
-					
-					
-					//Pull out the expression to use for gradient
-					colorExpression = "";
-					var exp0;
-					//console.log(qlikObject);
+						if (qlikObject.visualization == 'map') {
+							if (qlikObject.color.byMeasureDef != undefined) {
+								//exp0 = 
+								var libraryId = qlikObject.color.byMeasureDef.key;
+								
+								//console.log(libraryId);
+								
+								if(libraryId.length==5) {						
 
-					if (qlikObject.visualization == 'map') {
-						if (qlikObject.color.byMeasureDef != undefined) {
-							//exp0 = 
-							var libraryId = qlikObject.color.byMeasureDef.key;
-							
-							//console.log(libraryId);
-							
-							if(libraryId.length==5) {						
-							// app.model.enigmaModel.getMeasure(libraryId)
-							// .then(function(model) {
-								// model.getLayout()
-									// .then(function(layout) {
-										// //console.log(layout.qMeasure.qDef);
-										// exp0 = layout.qMeasure.qDef;
-										// setGradientColorExpression();
-										
-									// })
-								// })
-								
-								getMeasureValue(0).then(function(result) {
-									exp0 = result;
-									setGradientColorExpression();
-								})	
-								
-								
+									
+									getMeasureValue(0).then(function(result) {
+										exp0 = result;
+										oldGradient = exp0;
+										setGradientColorExpression(oldResult, exp0);
+									})	
+									
+									
+								}
+								else {
+									exp0 = libraryId;
+									oldGradient = exp0;
+									setGradientColorExpression(oldResult, exp0);
+								}
 							}
-							else {
-								exp0 = libraryId;
-								setGradientColorExpression();
+							else if(qlikObject.layers[0].measureDef != ""){
+								exp0 = qlikObject.layers[0].measureDef;
+								oldGradient = exp0;
+								setGradientColorExpression(oldResult, exp0);
 							}
-						}
-						else if(qlikObject.layers[0].measureDef != ""){
-							exp0 = qlikObject.layers[0].measureDef;
-							setGradientColorExpression();
-						}
-						else {exp0 = "NOMEASURESET";}
-						setGradientColorExpression();
-					}				
-					// else if(qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef != undefined) {
-						// //console.log("handwritten measure");
-						// //console.log(qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef);
-						
-						// exp0 = qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef;
-						// setGradientColorExpression();
-					// }
+							else {exp0 = "NOMEASURESET";}
+							oldGradient = exp0;
+							setGradientColorExpression(oldResult, exp0);
+						}				
 
-					else {
-						//console.log("master measure");
-						//console.log(qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef);
-						
-						//var myApp = app;
-						//console.log(app);
-						
-						// var libraryId = qlikObject.qHyperCubeDef.qMeasures[0].qLibraryId;
-						
-						// //console.log(libraryId);
-						
-						// app.model.enigmaModel.getMeasure(libraryId)
-							// .then(function(model) {
-								// model.getLayout()
-									// .then(function(layout) {
-										// //console.log(layout.qMeasure.qDef);
-										// exp0 = layout.qMeasure.qDef;
-										
-									// })
-									// .then(setGradientColorExpression)
-								// })
-								
-						getMeasureValue(0).then(function(result) {
-							exp0 = result;
-							setGradientColorExpression();
-						})									
-						
-						//console.log(app.model);
-						
-						// app.getMeasure("gPDABt")
-							// .then(function(handle) {
-								// console.log(handle);
-							// })
-						
+						else {
+
+									
+							getMeasureValue(0).then(function(result) {
+								exp0 = result;
+								oldGradient = exp0;
+								setGradientColorExpression(oldResult, exp0);
+							})									
+
+						}
 					}
 					
 					//console.log(exp0);
 					$('#bgopacity').on('input', function (value) {
 						colorExpression = "";
-						setGradientColorExpression();
+						setGradientColorExpression(oldResult, oldGradient);
 					});
 					//Check if user picked 2 or 3 color gradient and build color expression
 					
 					//console.log(result);
-					function setGradientColorExpression() {
+					function setGradientColorExpression(result, exp0) {
 					//console.log("set color function triggered");
+					//console.log(result);
 					
 						if(result.value.length == 2) //2 color gradient
 						{
@@ -785,7 +789,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						
 						modifyObject();
 					}
-				});
+				
 			}	
 		}
 		
