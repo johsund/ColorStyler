@@ -1,0 +1,14 @@
+{
+	"type": "mashup",
+	"name": "ColorStyler",
+	"version": "1.0.0",
+	"description": "Styling tool for Qlik Sense visualizations",
+	"homepage": "",
+	"author": "",
+	"keywords": "qlik-sense, mashup",
+	"license": "",
+	"repository": "",
+	"dependencies": {
+		"qlik-sense": ">=2.1.x"
+	}
+}
