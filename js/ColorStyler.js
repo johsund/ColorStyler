@@ -735,6 +735,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					function setGradientColorExpression(result, exp0) {
 					//console.log("set color function triggered");
 					//console.log(result);
+					colorExpression = "";
 					
 						if(result.value.length == 2) //2 color gradient
 						{
