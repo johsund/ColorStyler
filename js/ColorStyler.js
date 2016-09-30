@@ -216,9 +216,9 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 
 				$("."+colorOption).empty();
 				
-				$('<label class="lui-checkbox" style="paddin-top:10px;padding-bottom:10px;padding-left:5px;"><input class="lui-checkbox__input" type="checkbox" id="reverseColorCheckbox"/><div class="lui-checkbox__check-wrap"><span class="lui-checkbox__check"></span><span class="lui-checkbox__check-text">Reverse Colors</span></div></label>').appendTo("."+colorOption);
+				$('<label class="lui-checkbox reverseColorCheckboxClass"><input class="lui-checkbox__input" type="checkbox" id="reverseColorCheckbox"/><div class="lui-checkbox__check-wrap"><span class="lui-checkbox__check"></span><span class="lui-checkbox__check-text">Reverse Colors</span></div></label>').appendTo("."+colorOption);
 				
-				$('<div style="height:300px;overflow:auto;"><table id="themeTable" class="table table-hover table-condensed"></table>"').appendTo("."+colorOption);
+				$('<div class="colorThemeTable"><table id="themeTable" class="table table-hover table-condensed"></table>"').appendTo("."+colorOption);
 
 				$('#reverseColorCheckbox').click(function(value) {
 					$(this).toggleClass("selected");
@@ -596,9 +596,9 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				var reverseOrder = false;
 				$("."+colorOption).empty();
 				
-				$('<label class="lui-checkbox" style="paddin-top:10px;padding-bottom:10px;padding-left:5px;"><input class="lui-checkbox__input" type="checkbox" id="reverseColorCheckboxGradient"/><div class="lui-checkbox__check-wrap"><span class="lui-checkbox__check"></span><span class="lui-checkbox__check-text">Reverse Colors</span></div></label>').appendTo("."+colorOption);
+				$('<label class="lui-checkbox reverseColorCheckboxClass"><input class="lui-checkbox__input" type="checkbox" id="reverseColorCheckboxGradient"/><div class="lui-checkbox__check-wrap"><span class="lui-checkbox__check"></span><span class="lui-checkbox__check-text">Reverse Colors</span></div></label>').appendTo("."+colorOption);
 				
-				$('<div style="height:300px;overflow:auto;"><table id="gradientTable" class="table table-hover table-condensed"></table>"').appendTo("."+colorOption);
+				$('<div class="colorThemeTable"><table id="gradientTable" class="table table-hover table-condensed"></table>"').appendTo("."+colorOption);
 				
 				$('#reverseColorCheckboxGradient').click(function(value) {
 					$(this).toggleClass("selected");
@@ -664,7 +664,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						var clickedTheme = td.find('td:first').text();
 
 						$(".tableRow").removeClass("success");
-						//$(this).toggleClass("success");
+						$(td).addClass("success");
 						$("#" + lastTheme.context.id).addClass("success");
 						
 						var result = gradient_theme.filter(function( obj ) {

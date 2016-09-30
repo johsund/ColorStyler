@@ -148,7 +148,52 @@ var themes = [
 		id: 29,
 		name:"Multi Hue #7",
 		palette:['#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a']
-	}	
+	},
+	{
+		id: 30,
+		name:"Diverging Theme #1",
+		palette:['#8c510a','#bf812d','#dfc27d','#f6e8c3','#f5f5f5','#c7eae5','#80cdc1','#35978f','#01665e']
+	},
+	{
+		id: 31,
+		name:"Diverging Theme #2",
+		palette:['#c51b7d','#de77ae','#f1b6da','#fde0ef','#f7f7f7','#e6f5d0','#b8e186','#7fbc41','#4d9221']
+	},
+	{
+		id: 32,
+		name:"Diverging Theme #3",
+		palette:['#762a83','#9970ab','#c2a5cf','#e7d4e8','#f7f7f7','#d9f0d3','#a6dba0','#5aae61','#1b7837']
+	},	
+	{
+		id: 33,
+		name:"Diverging Theme #4",
+		palette:['#b35806','#e08214','#fdb863','#fee0b6','#f7f7f7','#d8daeb','#b2abd2','#8073ac','#542788']
+	},
+	{
+		id: 34,
+		name:"Diverging Theme #5",
+		palette:['#b2182b','#d6604d','#f4a582','#fddbc7','#f7f7f7','#d1e5f0','#92c5de','#4393c3','#2166ac']
+	},		
+	{
+		id: 35,
+		name:"Diverging Theme #6",
+		palette:['#b2182b','#d6604d','#f4a582','#fddbc7','#ffffff','#e0e0e0','#bababa','#878787','#4d4d4d']
+	},
+	{
+		id: 36,
+		name:"Diverging Theme #7",
+		palette:['#d73027','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4']
+	},	
+	{
+		id: 37,
+		name:"Diverging Theme #8",
+		palette:['#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850']
+	},
+	{
+		id: 38,
+		name:"Diverging Theme #9",
+		palette:['#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf','#e6f598','#abdda4','#66c2a5','#3288bd']
+	}		
 	
 ];
 
