@@ -44,7 +44,13 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 		qlik.getAppList(function(list){
 			list.forEach(function(value) {
 				//console.log(value);
-				$('<option value="'+ value.qDocId +'">'+value.qDocName+'</option>').appendTo("#qlikAppList");
+				//console.log(value);
+				if(value.qMeta.published != undefined && value.qMeta.published == true) { //only add apps from Desktop or My Work				
+				}
+				else {
+					$('<option value="'+ value.qDocId +'">'+value.qDocName+'</option>').appendTo("#qlikAppList");	
+				}
+
 			});
 			//$('<option selected disabled>Select an app...</option>').appendTo("#qlikAppList");
 		}, config);
