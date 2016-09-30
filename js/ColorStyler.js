@@ -66,7 +66,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			app = qlik.openApp($(this).val(), config);
 			currApp = $(this).val();
 			
-			//console.log(app.model.enigmaModel);
+			//console.log(app);
 			
 			
 			app.getAppObjectList( 'masterobject', function(reply){
@@ -449,12 +449,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					}
 					else {exp0 = "NOMEASURESET";}
 				}				
-				// else if(qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef != undefined) {
-					// //console.log("handwritten measure");
-					// //console.log(qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef);
-					
-					// exp0 = qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef;
-				// }
 
 				else {
 
@@ -888,11 +882,7 @@ function modifyProperties(handle) {
 					handle.color.auto = false;
 					
 					if(colorOption=="color1") {
-						//handle.color.singleColor = "#" + $("#chartColorPicker1").val();
-						//console.log($("#chartColorPicker1").val());
-						//console.log(handle.color.singleColor);
-						handle.color.singleColor = singleColor;//$("#chartColorPicker1").val();
-						//console.log(handle.color.singleColor);
+						handle.color.singleColor = singleColor;
 						handle.color.mode = "primary";
 					}
 					else if(colorOption=="color2") {
@@ -918,26 +908,17 @@ function modifyProperties(handle) {
 						
 					}
 					else if(colorOption=="color3") {
-						
-						//console.log("updating properties with gradient");
-						//handle.color.singleColor = "#" + $("#chartColorPicker3").val();
+
 						
 						handle.color.mode = "byExpression";
 						handle.color.expressionIsColor = true;
 						handle.color.colorExpression = colorExpression;
-						//console.log(handle.color.expressionIsColor);
-						//handle.color.reverseScheme = "true";
-						//console.log(handle.visualization);
+
 						
 						if(handle.visualization=='map') {
-							//console.log(handle);
-							//console.log(handle.color.colorExpression);
+							
 							handle.color.colorExpression = colorExpression;
-							//handle.color.byMeasureDef.key = colorExpression;
-							//handle.color.mode = "byMeasure";
-							//handle.color.mode = "byExpression";
-							//console.log(handle.color.colorExpression);
-							//console.log(handle);
+
 						}
 						else if(handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions.length===0) {
 							 var newqAttributeExpression = {
@@ -953,26 +934,17 @@ function modifyProperties(handle) {
 						
 					}					
 					else if(colorOption=="color4") {
-						//handle.color.singleColor = "#" + $("#chartColorPicker4").val();
-						//console.log("updating properties with gradient");
-						//handle.color.singleColor = "#" + $("#chartColorPicker3").val();
+
 						
 						handle.color.mode = "byExpression";
 						handle.color.expressionIsColor = true;
 						handle.color.colorExpression = colorExpression;
-						//console.log(handle.color.expressionIsColor);
-						//handle.color.reverseScheme = "true";
-						//console.log(handle.visualization);
+
 						
 						if(handle.visualization=='map') {
-							//console.log(handle);
-							//console.log(handle.color.colorExpression);
+
 							handle.color.colorExpression = colorExpression;
-							//handle.color.byMeasureDef.key = colorExpression;
-							//handle.color.mode = "byMeasure";
-							//handle.color.mode = "byExpression";
-							//console.log(handle.color.colorExpression);
-							//console.log(handle);
+
 						}
 						else if(handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions.length===0) {
 							 var newqAttributeExpression = {
