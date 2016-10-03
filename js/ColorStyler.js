@@ -31,6 +31,7 @@ var currObject;
 var qlikObject;
 var colorOption;
 var colorExpression;
+var sortingExpression;
 var singleColor;
 var lastTheme;
 var oldResult;
@@ -328,7 +329,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						colorExpression = "pick(mod(1,"+result.value.length+") "; //+1			Removed +1 to pick the first color from the theme
 					}
 					else {
-						colorExpression = "pick(mod(rank(TOTAL column(1)),"+result.value.length+") ";  //+1			Removed +1 to pick the first color from the theme
+						colorExpression = "pick(mod(rank(TOTAL column(1))-1,"+result.value.length+")+1 ";  //+1			Removed +1 to pick the first color from the theme
 					}
 						
 						
@@ -548,6 +549,10 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						colorExpression += ",1,NoOfRows(total)))-RangeMin (top(total ";
 						colorExpression += exp0;
 						colorExpression += ",1,NoOfRows(total))))-1))))/2)-.5)*2";
+						
+						sortingExpression = colorExpression.substring(10);
+						console.log(sortingExpression);
+						
 						colorExpression += "," + hexToRgba($("#chartGradient3").val(),$("#bgopacity")[0].value,3);
 						colorExpression += "," + hexToRgba($("#chartGradient1").val(),$("#bgopacity")[0].value,3);
 						colorExpression += "," + hexToRgba($("#chartGradient2").val(),$("#bgopacity")[0].value,3);
@@ -559,7 +564,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					else {
 						$("#showGradient").css("background", "linear-gradient(to right,"+hexToRgba($("#chartGradient1").val(),$("#bgopacity")[0].value,1)+", "+hexToRgba($("#chartGradient3").val(),$("#bgopacity")[0].value,1)+")");
 						
-						colorExpression += "ColorMix1 ((1+Sign(2*(";
+						colorExpression += "ColorMix1((1+Sign(2*(";
 						colorExpression += exp0;
 						colorExpression += "-RangeMin (top(total ";
 						colorExpression += exp0;
@@ -576,6 +581,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						colorExpression += ",1,NoOfRows(total)))-RangeMin (top(total ";
 						colorExpression += exp0;
 						colorExpression += ",1,NoOfRows(total))))-1))))/2";
+						sortingExpression = colorExpression.substring(10);
 						colorExpression += "," + hexToRgba($("#chartGradient3").val(),$("#bgopacity")[0].value,3);
 						colorExpression += "," + hexToRgba($("#chartGradient1").val(),$("#bgopacity")[0].value,3);
 						//colorExpression += "," + hexToRgb($("#chartGradient2").val());
@@ -739,7 +745,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					
 						if(result.value.length == 2) //2 color gradient
 						{
-							colorExpression += "ColorMix1 ((1+Sign(2*(";
+							colorExpression += "ColorMix1((1+Sign(2*(";
 							colorExpression += exp0;
 							colorExpression += "-RangeMin (top(total ";
 							colorExpression += exp0;
@@ -756,6 +762,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 							colorExpression += ",1,NoOfRows(total)))-RangeMin (top(total ";
 							colorExpression += exp0;
 							colorExpression += ",1,NoOfRows(total))))-1))))/2";
+							sortingExpression = colorExpression.substring(10);
 							colorExpression += "," + hexToRgba(result.value[0],$("#bgopacity")[0].value,3);
 							colorExpression += "," + hexToRgba(result.value[1],$("#bgopacity")[0].value,3);
 							//colorExpression += "," + hexToRgb($("#chartGradient2").val());
@@ -780,6 +787,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 							colorExpression += ",1,NoOfRows(total)))-RangeMin (top(total ";
 							colorExpression += exp0;
 							colorExpression += ",1,NoOfRows(total))))-1))))/2)-.5)*2";
+							sortingExpression = colorExpression.substring(10);
 							colorExpression += "," + hexToRgba(result.value[2],$("#bgopacity")[0].value,3);
 							colorExpression += "," + hexToRgba(result.value[0],$("#bgopacity")[0].value,3);
 							colorExpression += "," + hexToRgba(result.value[1],$("#bgopacity")[0].value,3);
@@ -838,6 +846,35 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				$("#success-alert").slideUp(500);
 			});
 		  
+		});
+		
+		$("#helpButton").click(function() {
+			
+			if($("#helpBox").length == 0) {
+				//console.log("HELP");
+				$(".container").toggleClass('helpFade');
+				
+				var myHelpHTML = "";
+				
+				myHelpHTML = '<div id="helpBox" class="lui-overlay lui-popover-container" style="left: 342.68px; top: 221px; position: absolute;" role="dialog"><div></div>';
+				myHelpHTML = myHelpHTML + '<div class="lui-popover  lui-popover--inverse" style="width: 400px;"><div class="lui-popover__header"><div class="lui-popover__title">Qlik Color Styler</div></div><div class="lui-popover__body">';
+				myHelpHTML = myHelpHTML + "<p><b>Welcome to the Qlik Color Styler</b></p><p>This is an extension that allows you to manipulate color schemes for Qlik Sense visualizations.<br></p><p><b>How to use it</b><br><br>1. Pick an app from the dropdown<br>2. Select a visualization to work on<br>3. Pick a color option from the left hand dropdown<br>4. Set your color, theme or gradient<br>5. Click 'Save Changes' to persist changes to app</p><p>Johannes Sunden - jsn@qlik.com<br><a href='https://github.com/johsund/colorstyler'>https://github.com/johsund/colorstyler</a></p>"
+				myHelpHTML = myHelpHTML + '</div><div class="lui-popover__footer"><button class="lui-button  lui-button--inverse  close-button" id="helpCloseButton">OK</button></div></div></div>';
+				
+				$(myHelpHTML).appendTo("body");
+				
+				$('#helpCloseButton').click(function() {
+						$("#helpBox").remove();
+						$(".container").toggleClass('helpFade');
+					} );
+			}
+					
+		});
+		
+
+		
+		$('#helpButton').hover(function() {
+			$(this).css('cursor','pointer');
 		});
 	
 // function sleep(miliseconds) {
@@ -916,7 +953,7 @@ function modifyProperties(handle) {
 					}
 					else if(colorOption=="color3") {
 
-						
+						console.log(handle);
 						handle.color.mode = "byExpression";
 						handle.color.expressionIsColor = true;
 						handle.color.colorExpression = colorExpression;
@@ -937,6 +974,21 @@ function modifyProperties(handle) {
 						else {
 							handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions[0].qExpression = colorExpression;
 						}			
+						
+						if(handle.visualization=='barchart') {
+							handle.qHyperCubeDef.qDimensions[0].qDef.autoSort = false;
+							handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qSortByExpression = -1;
+							if(handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.length==0) {
+								var newSortExpression = {
+									qv: sortingExpression
+								}
+								handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.push(newSortExpression);								
+							}
+							else {
+								handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.qv = sortingExpression;
+							}
+
+						}
 						//console.log(handle);
 						
 					}					
@@ -963,6 +1015,22 @@ function modifyProperties(handle) {
 						else {
 							handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions[0].qExpression = colorExpression;
 						}			
+						
+						if(handle.visualization=='barchart') {
+							handle.qHyperCubeDef.qDimensions[0].qDef.autoSort = false;
+							handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qSortByExpression = -1;
+							if(handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.length==0) {
+								var newSortExpression = {
+									qv: sortingExpression
+								}
+								handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.push(newSortExpression);								
+							}
+							else {
+								handle.qHyperCubeDef.qDimensions[0].qDef.qSortCriterias[0].qExpression.qv = sortingExpression;
+							}
+
+						}
+						
 						//console.log(handle);
 					}					
 
