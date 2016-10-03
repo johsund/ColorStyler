@@ -81,6 +81,29 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			
 			//console.log(reply);
 			
+			//console.log(app);
+			
+			// app.model.enigmaModel.getAllInfos()
+			// .then(function(result) {
+					// //console.log(result);
+					// $.each(result, function(key, value) {
+							// app.getObjectProperties(value.qId).then(function(model){
+								// //console.log(model);
+								// //qlikObject = model.properties;
+								// if(jQuery.inArray(model.properties.visualization, qlikColorPossible)>=0) {
+									// //console.log(model.id + " - " + model.properties.visualization + " - ");
+									// //console.log(model);
+									// if(model.properties.qMetaDef != undefined) {
+										// console.log(model.properties.qMetaDef.title);
+									// }
+								// }
+							// });	
+					// });
+				// });
+			
+			
+			
+			
 			$.each(reply.qAppObjectList.qItems, function(key, value) {		
 				
 				//console.log(jQuery.inArray(value.qData.visualization, qlikColorPossible));
@@ -856,7 +879,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 				var myHelpHTML = "";
 				
-				myHelpHTML = '<div id="helpBox" class="lui-overlay lui-popover-container" style="left: 342.68px; top: 221px; position: absolute;" role="dialog"><div></div>';
+				myHelpHTML = '<div id="helpBox" class="lui-overlay lui-popover-container" style="left: 270.68px; top: 221px; position: absolute;" role="dialog"><div></div>';
 				myHelpHTML = myHelpHTML + '<div class="lui-popover  lui-popover--inverse" style="width: 400px;"><div class="lui-popover__header"><div class="lui-popover__title">Qlik Color Styler</div></div><div class="lui-popover__body">';
 				myHelpHTML = myHelpHTML + "<p><b>Welcome to the Qlik Color Styler</b></p><p>This is an extension that allows you to manipulate color schemes for Qlik Sense visualizations.<br></p><p><b>How to use it</b><br><br>1. Pick an app from the dropdown<br>2. Select a visualization to work on<br>3. Pick a color option from the left hand dropdown<br>4. Set your color, theme or gradient<br>5. Click 'Save Changes' to persist changes to app</p><p>Johannes Sunden - jsn@qlik.com<br><a href='https://github.com/johsund/colorstyler'>https://github.com/johsund/colorstyler</a></p>"
 				myHelpHTML = myHelpHTML + '</div><div class="lui-popover__footer"><button class="lui-button  lui-button--inverse  close-button" id="helpCloseButton">OK</button></div></div></div>';
