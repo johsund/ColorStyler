@@ -77,15 +77,15 @@ body {
 }
 .size-large {
 	width:80%;
-	height:600px;
+	height:535px;
 }
 .size-xlarge {
 	width:95%;
-	height:800px;
+	height:750px;
 }
 
 .colorThemeTable {
-	height:400px;
+	height:320px;
 	overflow:auto;
 }
 
@@ -112,6 +112,20 @@ body {
     right: 0;
     margin: auto;
 	margin-left:-250px;
+}
+
+.tooltip {
+	 font-family: inherit !important;
+}
+
+.tooltip.bottom .tooltip-arrow{
+    top: 5%;
+    margin-top: 0px;
+}
+
+.tooltip.top .tooltip-arrow{
+    left: 6%;
+    bottom:1px;
 }
 
 input[type=range] {

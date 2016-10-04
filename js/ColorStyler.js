@@ -34,6 +34,7 @@ var colorExpression;
 var sortingExpression;
 var singleColor;
 var lastTheme;
+var lastGradientTheme;
 var oldResult;
 var oldGradient;
 
@@ -41,6 +42,7 @@ var appHandle;
 
 require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) {
 
+		
 	
 		qlik.getAppList(function(list){
 			list.forEach(function(value) {
@@ -112,6 +114,27 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					$('<button class="lui-button" id="'+value.qInfo.qId+'"><span class="lui-icon  '+ qlikLUINameArray[jQuery.inArray( value.qData.visualization, qlikNameArray )] +'" style="margin-right:5px;"></span>'+value.qMeta.title+'</button>').appendTo("#appVizList");
 					
 					
+					//$("#"+value.qInfo.qId).hover(function() {
+						//console.log(value.qMeta.description);
+						
+						// var tooltip;
+						// var options = {
+							// alignTo: document.getElementById(value.qInfo.qId), //$("#"+value.qInfo.qId),
+							// dock: "bottom",
+							// content: "<span>"+value.qInfo.qId+"</span>"
+						// };
+						// tooltip = leonardoui.tooltip(options);
+						var tooltipContent;
+						if(value.qMeta.description=="" || value.qMeta.description==undefined) {
+							tooltipContent = "No description";
+						}
+						else {
+							tooltipContent = value.qMeta.description;
+						}
+						$("#"+value.qInfo.qId).tooltip({title: tooltipContent, placement: "bottom"});
+						
+					//});
+					
 					$("#"+value.qInfo.qId).click(function() {
 						$( "#appVizList :button" ).each(function( index ) {
 							$(this).removeClass("lui-button--success");
@@ -181,22 +204,13 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			if(colorOption=="color1") {
 				
 				$('#bgopacity').on('input', function (value) {
-						//console.log($("#chartColorPicker1")[0].value);
-						//console.log(value.currentTarget.value);
-						//console.log(hexToRgba($("#chartColorPicker1")[0].value, value.currentTarget.value));
+
 						
 						var tempColor = hexToRgba($("#chartColorPicker1")[0].value, value.currentTarget.value, 1)
-						
-						//sender
-						
-						//$("#chartColorPicker1").attr("value", tempColor);
-						//$("#chartColorPicker1").css("background-color", tempColor);
-						//$("#chartColorPicker1")[0].value = tempColor;
+
 						
 						singleColorChange();
-						
-						//singleColor = tempColor;
-						//modifyObject();
+
 				});
 				
 				
@@ -324,7 +338,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					//$(td).addClass("success");
 					$("#" + lastTheme.context.id).addClass("success");
 					
-					
+					//console.log(chart_theme);
 					var result = chart_theme.filter(function( obj ) {
 					  return obj.label == clickedTheme;
 					})[0];
@@ -445,7 +459,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 				colorExpression = "";
 				var exp0;
-				//console.log(qlikObject);
+				console.log(qlikObject);
 
 				if (qlikObject.visualization == 'map') {
 					if (qlikObject.color.byMeasureDef != undefined) {
@@ -454,7 +468,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						
 						//console.log(libraryId);
 						
-						if(libraryId.length==5) {						
+						//if(libraryId.length==5) {						
 						// app.model.enigmaModel.getMeasure(libraryId)
 						// .then(function(model) {
 							// model.getLayout()
@@ -465,14 +479,14 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 								// })
 							// })
 							getMeasureValue(0).then(function(result) {
-									//console.log(result);
-								exp0 = result;
+									console.log(result);
+									exp0 = result;
 								//setColorExpression2Dim();
 							})							
-						}
-						else {
-							exp0 = libraryId;
-						}
+						//}
+						//else {
+							//exp0 = libraryId;
+						//}
 					}
 					else if(qlikObject.layers[0].measureDef != ""){
 						exp0 = qlikObject.layers[0].measureDef;
@@ -639,8 +653,16 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					}
 					$("#gradientTable tr").remove();
 					drawGradientTable();
-					//console.log(lastTheme);
-					generateGradientTheme(lastTheme);
+					//console.log(lastGradientTheme.context.id);
+					//$(".tableRow").removeClass("success");
+					//drawGradientTable(function() {generateGradientTheme(lastGradientTheme);});
+					//$(".tableRow").addClass("success");
+					
+					//console.log($("#"+lastGradientTheme));
+					
+					//$("#" + lastGradientTheme.context.id).addClass("success");
+					
+					generateGradientTheme(lastGradientTheme);
 				});
 				
 				drawGradientTable();
@@ -651,7 +673,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					
 					$.each(gradient_theme, function(index, value) {
 						
-						var tableRow = "<tr class='tableRow' id='"+index+"'><td>"+value.label+"</td>"; //changed from value.label since can't address spaces in element IDs
+						var tableRow = "<tr class='tableRow' id='gradient"+index+"'><td>"+value.label+"</td>"; //changed from value.label since can't address spaces in element IDs
 						var colorArray = [];
 						
 						var palette;
@@ -669,10 +691,10 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						});
 						
 						if(colorArray.length==3) {
-							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+", "+colorArray[2]+");'></div>";
+							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[2]+", "+colorArray[1]+", "+colorArray[0]+");'></div>";
 						}
 						else {
-							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[0]+", "+colorArray[1]+");'></div>";
+							var gradientVariable = "<div style='float:left;height:20px;width:100%;background:linear-gradient(to right,"+colorArray[1]+", "+colorArray[0]+");'></div>";
 						}
 						tableRow = tableRow + "<td style='width:60%;'> " + gradientVariable + "</td></tr>";
 						
@@ -680,11 +702,10 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					});
 				}
 				
-				//$('<div class="colorObj hidden" id="showGradientTheme" style="width:100%;height:40px;margin-top:25px;"></div>').appendTo("#gradientTable");
-				//$("#showGradientTheme").css("background", "linear-gradient(to right,#"+$("#chartGradient1").val()+", #"+$("#chartGradient2").val()+", #"+$("#chartGradient3").val()+")");
 				
 				$("#gradientTable").on('click', 'tr', function() {
-					lastTheme = $(this);
+					//$(".tableRow").removeClass("success");
+					lastGradientTheme = $(this);
 					generateGradientTheme($(this));
 				});
 				
@@ -693,8 +714,17 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						var clickedTheme = td.find('td:first').text();
 
 						$(".tableRow").removeClass("success");
-						$(td).addClass("success");
-						$("#" + lastTheme.context.id).addClass("success");
+						
+						if($("#" + lastGradientTheme.context.id).hasClass('success')) {
+							//console.log("has success already");
+						}
+						else {
+							$("#" + lastGradientTheme.context.id).addClass('success');
+							//console.log("success set");
+						}
+						//console.log(lastGradientTheme.context.id);
+						//$("#" + lastGradientTheme.context.id).addClass("success");
+						
 						
 						var result = gradient_theme.filter(function( obj ) {
 						  return obj.label == clickedTheme;
@@ -714,7 +744,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 								
 								//console.log(libraryId);
 								
-								if(libraryId.length==5) {						
+								//if(libraryId.length==5) {						
 
 									
 									getMeasureValue(0).then(function(result) {
@@ -724,12 +754,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 									})	
 									
 									
-								}
-								else {
-									exp0 = libraryId;
-									oldGradient = exp0;
-									setGradientColorExpression(oldResult, exp0);
-								}
 							}
 							else if(qlikObject.layers[0].measureDef != ""){
 								exp0 = qlikObject.layers[0].measureDef;
@@ -900,12 +924,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			$(this).css('cursor','pointer');
 		});
 	
-// function sleep(miliseconds) {
-   // var currentTime = new Date().getTime();
-
-   // while (currentTime + miliseconds >= new Date().getTime()) {
-   // }
-// }
 	
 
 		
@@ -961,6 +979,17 @@ function modifyProperties(handle) {
 						
 						if(handle.visualization=='map') {
 							handle.color.colorExpression = colorExpression;
+							if(handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.length===0) {
+								 var newqAttributeExpression = {
+									 id:"colorByExpression",
+									 qExpression:colorExpression
+								 };
+								 handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.push(newqAttributeExpression);
+							}
+							else {
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].id = "colorByExpression";
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qExpression = colorExpression;
+							}								
 						}
 						else if(handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions.length===0) {
 							 var newqAttributeExpression = {
@@ -985,6 +1014,17 @@ function modifyProperties(handle) {
 						if(handle.visualization=='map') {
 							
 							handle.color.colorExpression = colorExpression;
+							if(handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.length===0) {
+								 var newqAttributeExpression = {
+									 id:"colorByExpression",
+									 qExpression:colorExpression
+								 };
+								 handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.push(newqAttributeExpression);
+							}
+							else {
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].id = "colorByExpression";
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qExpression = colorExpression;
+							}	
 
 						}
 						else if(handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions.length===0) {
@@ -1025,7 +1065,19 @@ function modifyProperties(handle) {
 						
 						if(handle.visualization=='map') {
 
+							console.log(handle);
 							handle.color.colorExpression = colorExpression;
+							if(handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.length===0) {
+								 var newqAttributeExpression = {
+									 id:"colorByExpression",
+									 qExpression:colorExpression
+								 };
+								 handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.push(newqAttributeExpression);
+							}
+							else {
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].id = "colorByExpression";
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qExpression = colorExpression;
+							}							
 
 						}
 						else if(handle.qHyperCubeDef.qMeasures[0].qAttributeExpressions.length===0) {
@@ -1096,7 +1148,28 @@ function getMeasureValue(measureNumber) {
 
 		var measureResolve;
 		
-		if(qlikObject.qHyperCubeDef.qMeasures[measureNumber].qLibraryId == undefined) {
+		if (qlikObject.visualization =='map') {
+			app.model.enigmaModel.getMeasure(qlikObject.color.byMeasureDef.key)
+			.then(function(model) {
+				//console.log(model);
+				if(model!= null) {
+					model.getLayout()
+						.then(function(layout) {
+							measureResolve = layout.qMeasure.qDef;
+							
+						})
+						.then(function() {
+							return resolve(measureResolve);
+						})
+				}
+				else {
+					measureResolve = qlikObject.color.byMeasureDef.key;
+					return resolve(measureResolve);
+				}
+				})
+				
+		}
+		else if(qlikObject.qHyperCubeDef.qMeasures[measureNumber].qLibraryId == undefined) {
 			
 			measureResolve = qlikObject.qHyperCubeDef.qMeasures[measureNumber].qDef.qDef;
 			return resolve(measureResolve);
