@@ -491,7 +491,18 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					else if(qlikObject.layers[0].measureDef != ""){
 						exp0 = qlikObject.layers[0].measureDef;
 					}
-					else {exp0 = "NOMEASURESET";}
+					else {
+						
+					  $("#success-alert").remove();
+					  $('<div class="alert alert-info" id="success-alert"><button type="button" class="close" data-dismiss="alert">x</button><strong>Please set a color measure for the map first. </strong></div>').appendTo("#messageBar");
+					  $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+							$("#success-alert").slideUp(500);
+						});	
+						
+					
+						exp0 = "NOMEASURESET";
+						
+					}
 				}				
 
 				else {
@@ -760,7 +771,16 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 								oldGradient = exp0;
 								setGradientColorExpression(oldResult, exp0);
 							}
-							else {exp0 = "NOMEASURESET";}
+							else {
+								exp0 = "NOMEASURESET";
+							
+							  $("#success-alert").remove();
+							  $('<div class="alert alert-info" id="success-alert"><button type="button" class="close" data-dismiss="alert">x</button><strong>Please set a color measure for the map first. </strong></div>').appendTo("#messageBar");
+							  $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+									$("#success-alert").slideUp(500);
+								});	
+								
+							}
 							oldGradient = exp0;
 							setGradientColorExpression(oldResult, exp0);
 						}				
