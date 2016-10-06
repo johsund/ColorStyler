@@ -9,6 +9,8 @@ It can be tricky to figure out how to write color expressions for complex gradie
 Here's a youtube video that walks through the application and demonstrates how it can be used:
 https://www.youtube.com/watch?v=p7z-ih3pOIU
 
+[![IMAGE ALT TEXT](https://img.youtube.com/vi/p7z-ih3pOIU/0.jpg)](https://www.youtube.com/watch?v=p7z-ih3pOIU "ColorStyler")
+
 # Installation & Setup
 
  * Download zipped extension
