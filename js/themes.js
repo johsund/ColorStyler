@@ -1,7 +1,7 @@
 var themes = [
 	{
 		id: 1,
-		name:"Default AnyChart",
+		name:"Default Palette",
 		palette:["#64b5f6","#1976d2","#ef6c00","#ffd54f","#455a64","#96a6a6","#dd2c00","#00838f","#00bfa5","#ffa000"]
 	},
 	{

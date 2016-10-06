@@ -568,6 +568,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 				function gradientColorChange() {
 					colorExpression = "";
+					sortingExpression = "";
 					//console.log("Color Changed");
 					//console.log($("#3colorGradient")[0].checked);
 
@@ -647,6 +648,9 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 			}					
 			else if(colorOption=="color4") {
+				
+				console.log(qlikObject);
+				
 				var reverseOrder = false;
 				$("."+colorOption).empty();
 				
@@ -745,6 +749,8 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						
 						//Pull out the expression to use for gradient
 						colorExpression = "";
+						sortingExpression = "";
+						
 						var exp0;
 						//console.log(qlikObject);
 
@@ -1044,6 +1050,7 @@ function modifyProperties(handle) {
 							else {
 								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].id = "colorByExpression";
 								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qExpression = colorExpression;
+								delete handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qLibraryId;
 							}	
 
 						}
@@ -1090,6 +1097,7 @@ function modifyProperties(handle) {
 							if(handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.length===0) {
 								 var newqAttributeExpression = {
 									 id:"colorByExpression",
+									 label: "ColorExpression",
 									 qExpression:colorExpression
 								 };
 								 handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.push(newqAttributeExpression);
@@ -1097,6 +1105,8 @@ function modifyProperties(handle) {
 							else {
 								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].id = "colorByExpression";
 								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qExpression = colorExpression;
+								handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qLibraryId ="";
+								delete handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions[0].qLibraryId;
 							}							
 
 						}
