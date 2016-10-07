@@ -20,6 +20,9 @@ https://www.youtube.com/watch?v=p7z-ih3pOIU
  
  # How to use
  
+  * Desktop: http://localhost:4848/extensions/colorstyler/colorstyler.html
+  * Server: http(s)://servername/virtualproxy/extensions/colorstyler/colorstyler.html
+ 
   * Click on __HELP__ in top right corner for assistance
   
   ![alt tag](https://raw.githubusercontent.com/johsund/ColorStyler/master/img/HelpView.png)
