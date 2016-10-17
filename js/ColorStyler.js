@@ -459,7 +459,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				
 				colorExpression = "";
 				var exp0;
-				console.log(qlikObject);
+				//console.log(qlikObject);
 
 				if (qlikObject.visualization == 'map') {
 					if (qlikObject.color.byMeasureDef != undefined) {
@@ -488,9 +488,14 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 							//exp0 = libraryId;
 						//}
 					}
-					else if(qlikObject.layers[0].measureDef != ""){
+					else if(qlikObject.layers[0].measureDef != ""  && qlikObject.layers[0].measureDef != undefined){
 						exp0 = qlikObject.layers[0].measureDef;
 					}
+					else if(qlikObject.layers[0].qHyperCubeDef.qMeasures[0].qDef.qDef!="") {
+						exp0 = qlikObject.layers[0].qHyperCubeDef.qMeasures[0].qDef.qDef
+						//oldGradient = exp0;
+						//setGradientColorExpression(oldResult, exp0);
+					}	
 					else {
 						
 					  $("#success-alert").remove();
@@ -600,7 +605,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						colorExpression += ",1,NoOfRows(total))))-1))))/2)-.5)*2";
 						
 						sortingExpression = colorExpression.substring(10);
-						console.log(sortingExpression);
+						//console.log(sortingExpression);
 						
 						colorExpression += "," + hexToRgba($("#chartGradient3").val(),$("#bgopacity")[0].value,3);
 						colorExpression += "," + hexToRgba($("#chartGradient1").val(),$("#bgopacity")[0].value,3);
@@ -649,7 +654,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			}					
 			else if(colorOption=="color4") {
 				
-				console.log(qlikObject);
+				//console.log(qlikObject);
 				
 				var reverseOrder = false;
 				$("."+colorOption).empty();
@@ -772,12 +777,19 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 									
 									
 							}
-							else if(qlikObject.layers[0].measureDef != ""){
+							else if(qlikObject.layers[0].measureDef != "" && qlikObject.layers[0].measureDef != undefined){
+								//console.log("qlikObject.layers[0].measureDef != ''");
 								exp0 = qlikObject.layers[0].measureDef;
 								oldGradient = exp0;
 								setGradientColorExpression(oldResult, exp0);
 							}
+							else if(qlikObject.layers[0].qHyperCubeDef.qMeasures[0].qDef.qDef!="") {
+								exp0 = qlikObject.layers[0].qHyperCubeDef.qMeasures[0].qDef.qDef
+								oldGradient = exp0;
+								setGradientColorExpression(oldResult, exp0);
+							}
 							else {
+								console.log("nomeasureset");
 								exp0 = "NOMEASURESET";
 							
 							  $("#success-alert").remove();
@@ -1031,7 +1043,7 @@ function modifyProperties(handle) {
 					}
 					else if(colorOption=="color3") {
 
-						console.log(handle);
+						//console.log(handle);
 						handle.color.mode = "byExpression";
 						handle.color.expressionIsColor = true;
 						handle.color.colorExpression = colorExpression;
@@ -1092,7 +1104,7 @@ function modifyProperties(handle) {
 						
 						if(handle.visualization=='map') {
 
-							console.log(handle);
+							//console.log(handle);
 							handle.color.colorExpression = colorExpression;
 							if(handle.layers[0].qHyperCubeDef.qDimensions[0].qAttributeExpressions.length===0) {
 								 var newqAttributeExpression = {
