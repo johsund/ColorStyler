@@ -46,8 +46,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 	
 		qlik.getAppList(function(list){
 			list.forEach(function(value) {
-				//console.log(value);
-				//console.log(value);
 				if(value.qMeta.published != undefined && value.qMeta.published == true) { //only add apps from Desktop or My Work				
 				}
 				else {
@@ -55,7 +53,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				}
 
 			});
-			//$('<option selected disabled>Select an app...</option>').appendTo("#qlikAppList");
 		}, config);
 		
 		$("#qlikAppList").change(function(){
@@ -75,36 +72,10 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			app = qlik.openApp($(this).val(), config);
 			currApp = $(this).val();
 			
-			//console.log(app);
-			
 			
 			app.getAppObjectList( 'masterobject', function(reply){
 			$("#appVizList").empty();
-			
-			//console.log(reply);
-			
-			//console.log(app);
-			
-			// app.model.enigmaModel.getAllInfos()
-			// .then(function(result) {
-					// //console.log(result);
-					// $.each(result, function(key, value) {
-							// app.getObjectProperties(value.qId).then(function(model){
-								// //console.log(model);
-								// //qlikObject = model.properties;
-								// if(jQuery.inArray(model.properties.visualization, qlikColorPossible)>=0) {
-									// //console.log(model.id + " - " + model.properties.visualization + " - ");
-									// //console.log(model);
-									// if(model.properties.qMetaDef != undefined) {
-										// console.log(model.properties.qMetaDef.title);
-									// }
-								// }
-							// });	
-					// });
-				// });
-			
-			
-			
+
 			
 			$.each(reply.qAppObjectList.qItems, function(key, value) {		
 				
@@ -113,17 +84,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				if(jQuery.inArray(value.qData.visualization, qlikColorPossible)>=0) {
 					$('<button class="lui-button" id="'+value.qInfo.qId+'"><span class="lui-icon  '+ qlikLUINameArray[jQuery.inArray( value.qData.visualization, qlikNameArray )] +'" style="margin-right:5px;"></span>'+value.qMeta.title+'</button>').appendTo("#appVizList");
 					
-					
-					//$("#"+value.qInfo.qId).hover(function() {
-						//console.log(value.qMeta.description);
-						
-						// var tooltip;
-						// var options = {
-							// alignTo: document.getElementById(value.qInfo.qId), //$("#"+value.qInfo.qId),
-							// dock: "bottom",
-							// content: "<span>"+value.qInfo.qId+"</span>"
-						// };
-						// tooltip = leonardoui.tooltip(options);
 						var tooltipContent;
 						if(value.qMeta.description=="" || value.qMeta.description==undefined) {
 							tooltipContent = "No description";
@@ -154,9 +114,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 								//console.log(model);
 								qlikObject = model.properties;
 							});	
-							
-							//console.log(qlikObject);
-							//console.log(qlikObject.properties.title);
+
 							populateColorTypes(value);
 						//});	
 					});
@@ -181,8 +139,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 
 		
 			$("#qlikColorOption").change(function(){
-				//$("#colorcontainer").addClass("hidden");
-				//console.log($("#qlikColorOption").val());
+
 				$(".colorcontainer").addClass("hidden");
 				$("." + $("#qlikColorOption").val()).removeClass("hidden");
 				colorOption = $("#qlikColorOption").val();
@@ -218,9 +175,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					
 
 					singleColorChange();
-					//console.log("change");
-					//singleColor = "#" + $("#chartColorPicker1").val()
-					//modifyObject();
+
 				});
 				
 				function singleColorChange() {
@@ -233,10 +188,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					modifyObject();
 				}
 				
-				// $("#chartColorPicker1").change(function() {
-					// //console.log($(this).val());
-					// modifyObject();
-				// });
+
 			}
 			else if(colorOption=="color2") {
 				
@@ -286,10 +238,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 					
 					var tableRow = "<tr class='tableRow' id='"+index+"'><td>"+value.label+"</td>"; //value.label was previous id
 					var colorArray = "";
-					
-					// console.log(value);
-					// console.log(value.value);
-					// console.log(value.value.reverse());
+
 					var palette;
 					
 					if(reverseOrder==true) {
@@ -313,12 +262,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 
 				
 				$("#themeTable").on('click', 'tr', function() {
-					
-					//$("#themeTable tr").removeClass("success");
-					//$("#" + $(this)[0].id).toggleClass("success");
-					
-					//console.log($("#" + $(this)[0].id));
-					//console.log($(this));
+
 					
 					lastTheme = $(this);
 					generateTheme($(this));
@@ -326,8 +270,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 				});
 				
 				function generateTheme(td) {
-					//console.log( $(this).find('td:first').text() );
-					//var clickedTheme = $(this).find('td:first').text();
 					
 					var clickedTheme = td.find('td:first').text();
 
@@ -371,9 +313,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						
 						
 						$.each(result.value, function(index, value) {
-							//colorExpression += ",'"+value+"'";	
-							//console.log(value);
-							//console.log(hexToRgba(value,$("#bgopacity")[0].value,3));
 							colorExpression += ","+hexToRgba(value,$("#bgopacity")[0].value,3)+"";
 						});
 						
@@ -385,14 +324,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 						
 						var dim0; 
 						var dim1;
-						
-						// getDimValues()
-							// .then(function() {
-								// console.log("triggered");
-								// setColorExpression2Dim();
-							// });
-							
-						//$.when(getDimValues()).then(setColorExpression2Dim());
+
 						getDimValue(0).then(function(result) {
 							//console.log(result);
 							dim0 = result;
@@ -408,29 +340,15 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 
 						
 						function setColorExpression2Dim() {
-						
-							//sleep(1000);
-						
-							//console.log("Dim0:" +dim0);
-							//console.log(qlikObject.qHyperCubeDef.qDimensions[0]);
-							//console.log("Dim1:" +dim1);
-							//console.log(qlikObject.qHyperCubeDef.qDimensions[1]);
-							
+									
 							var exp0 = qlikObject.qHyperCubeDef.qMeasures[0].qDef.qDef;
-							//console.log(exp0);
-							
-							//colorExpression = "pick(mod(rank(sum(aggr("+exp0+","+dim0+"))),"+result.value.length+")+1 ";
 							
 							//*** CURRENT BEST ***
 							//colorExpression = "pick(mod(round(rowno()/sum(total aggr(1,["+dim1+"])), .10)*10,"+result.value.length+") "; //+1			Removed +1 to pick the first color from the theme
 							//********************
 							
 							colorExpression = "pick(mod(sum(total <["+dim1+"]> aggr(Rowno(), ["+dim1+"])),"+result.value.length+")"; //+1			Removed +1 to pick the first color from the theme
-							//sum(total <[YYYYMM.autoCalendar.Year]> aggr(Rowno(), [YYYYMM.autoCalendar.Year]))
-							
-							//pick(mod(rank(sum(aggr(sum([Sales Amount]),[Sales Rep Name]))),10)+1 ,'#64b5f6','#1976d2','#ef6c00','#ffd54f','#455a64','#96a6a6','#dd2c00','#00838f','#00bfa5','#ffa000')
-							
-							
+
 							$.each(result.value, function(index, value) {
 								//colorExpression += ",'"+value+"'";						
 								colorExpression += ","+hexToRgba(value,$("#bgopacity")[0].value,3)+"";
@@ -438,7 +356,6 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 							
 							colorExpression += ")";
 							
-							//console.log(colorExpression);
 							modifyObject();
 							//*********************************************8
 						}
@@ -919,10 +836,7 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 		});
 		
 		$("#saveButton").click(function() {
-			//console.log(currObject);
-				
-				//modifyObject()
-				//.then(function() {console.log("All Done!");}, function(error) {console.log(error);})
+
 			app.doSave();
 			//console.log("App Saved");
 		  $("#success-alert").remove();
