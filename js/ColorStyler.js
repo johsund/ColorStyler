@@ -71,6 +71,8 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			//console.log('Selected value: ' + $(this).val());
 			app = qlik.openApp($(this).val(), config);
 			currApp = $(this).val();
+
+
 			
 			
 			app.getAppObjectList( 'masterobject', function(reply){
@@ -834,6 +836,10 @@ require( ["js/qlik", "js/themes.js", "js/gradientThemes.js"], function ( qlik ) 
 			$( "#vizArea" ).removeClass( "size-xsmall size-small size-medium size-large size-xlarge" ).addClass( "size-xlarge" );
 			qlik.resize();
 		});
+		
+		$("#clear").click(function(){
+			app.clearAll();
+		})
 		
 		$("#saveButton").click(function() {
 
