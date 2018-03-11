@@ -1,3 +1,12 @@
+March 11 2018 Update: There will be no further development of ColorStyler. Qlik has released support for custom themes with the Qlik Sense February 2018 release: https://community.qlik.com/blogs/qlikviewdesignblog/2018/02/06/whats-new-in-qlik-sense-february-2018
+
+I have converted all the gradients and palettes in ColorStyler into a ColorStyler theme that can be downloaded here:
+https://github.com/johsund/ColorStyler/blob/master/colorStylerTheme.zip?raw=true
+
+Add it to Qlik like any extension and then pick the theme in the App Overview by pressing the small gear and picking the theme name. Now you'll have access to all the styles under each object's color properties in Edit mode. Enjoy!
+
+////////////////////////////////////////
+
 # ColorStyler
 
 ![alt tag](https://raw.githubusercontent.com/johsund/ColorStyler/master/img/Map_GradientTheme.png)
